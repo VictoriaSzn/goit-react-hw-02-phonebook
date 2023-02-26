@@ -12,7 +12,7 @@ class ContactForm extends Component{
   }
   handleSubmit = (evt) => {
     evt.preventDefault();
-      this.props.onSubmitForm(this.state);
+      this.props.onSubmitForm({...this.state});
       this.reset();
     }
     reset = () => {
@@ -21,7 +21,7 @@ class ContactForm extends Component{
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-          <label>Name
+            <label>Name
             <input
               type="text"
               name="name"
