@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import styles from "../Form.module.css";
 
 class ContactForm extends Component{
     state = {
         name: '',
         number: '' 
     }
-    inputChange = (evt) => {
+  inputChange = (evt) => {
     const { name, value } = evt.currentTarget;
     this.setState({[name]: value});
   }
@@ -21,8 +21,8 @@ class ContactForm extends Component{
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-            <label>Name
-            <input
+            <label className={styles.label}>Name
+            <input className={styles.input}
               type="text"
               name="name"
               pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -31,8 +31,8 @@ class ContactForm extends Component{
               value={this.state.name}
               onChange={this.inputChange} />
           </label>
-          <label>Number
-            <input
+          <label className={styles.label}>Number
+            <input className={styles.input}
               type="tel"
               name="number"
               pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -42,14 +42,10 @@ class ContactForm extends Component{
               onChange={this.inputChange}
             />
           </label>
-          <button type="submit">Add contact</button>
+          <button type="submit" className={styles.btn}>Add contact</button>
         </form>
          );
     }
 }
-// ContactForm.propTypes = {
-//   onAddContact: PropTypes.func.isRequired,
-//   name: PropTypes.string.isRequired,
-//   number: PropTypes.string.isRequired,
-// };
+
 export default ContactForm;

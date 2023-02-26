@@ -14,29 +14,42 @@ state = {
   ],
   filter: ''
   }
-  addContacts = ({name, number}) => {
-    const contact = {
-      id: nanoid(),
-      name,
-      number,
+  addContacts = ({ name, number }) => {
+    const includeNumber = this.state.contacts
+      .map((contact) => contact.name)
+      .includes(name);
+    
+    if (includeNumber) {
+      alert(`${name} is already in contacts`);
+    } else {
+      const contact = {
+        id: nanoid(),
+        name,
+        number,
+      };
+      this.setState(prevState => ({
+        contacts: [contact, ...prevState.contacts],
+      }));
     }
-    this.setState(prevState => ({
-      contacts: [contact, ...prevState.contacts],
-    }));
-  }
-  // formSubmitHandler = data => {
-  //   console.log(data);
-  // }
+  };
+  
   changeFilter = (evt) => {
     this.setState({ filter: evt.currentTarget.value });
-  }
+  };
+
+  filtredContacts = () => {
+    const { filter, contacts } = this.state;
+    return contacts.filter(({ name }) =>
+    name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
   deleteContacts = (contactsId) => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactsId),
     }))
   };
   render() {
-    const { contacts, filter } = this.state;
+    const { filter } = this.state;
     const normaliseFilter = this.state.filter.toLowerCase();
     const visibleContacts = this.state.contacts.filter(contact =>
       contact.name.toLowerCase().includes(normaliseFilter),);
@@ -56,9 +69,16 @@ state = {
         <ContactForm onSubmitForm={this.addContacts } /> 
         
         <h2>Contacts</h2>
-        <Filter value={filter} onChangeFilter={this.changeFilter} /> 
+       
+          <Filter
+            value={filter}
+            onChangeFilter={this.changeFilter} />
         
-        <ContactList contacts={visibleContacts} onDeleteContact={ this.deleteContacts} /> 
+         {visibleContacts.length > 0 && (
+          <ContactList
+            contacts={visibleContacts}
+            onDeleteContact={this.deleteContacts} />
+        )}
       </div>
     );
   }
